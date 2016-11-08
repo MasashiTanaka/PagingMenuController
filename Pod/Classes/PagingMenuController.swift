@@ -175,7 +175,8 @@ open class PagingMenuController: UIViewController, PagingValidator {
         let duration = animated ? options.animationDuration : 0
         UIView.animate(withDuration: duration, animations: {
             () -> Void in
-            pagingViewController.positionMenuController()
+            // 遷移のアニメーションに1つ前の画面が表示されてから指定の画面が表示されるという問題があるためコメントアウト
+//            pagingViewController.positionMenuController()
             }) { [weak self] (_) -> Void in
                 pagingViewController.relayoutPagingViewControllers()
                 
