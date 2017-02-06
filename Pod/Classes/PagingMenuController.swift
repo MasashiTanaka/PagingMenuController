@@ -167,24 +167,38 @@ open class PagingMenuController: UIViewController, PagingValidator {
         let nextPage = page % pagingViewController.controllers.count
         let nextPagingViewController = pagingViewController.controllers[nextPage]
         delegate?.willMove(toMenu: nextPagingViewController, fromMenu: previousPagingViewController)
-        menuView?.move(toPage: page)
+
+        
+        switch options.componentType {
+        case .menuView, .all:
+            menuView?.move(toPage: page)
+        case .pagingController:
+            break
+        }
+        
         
         pagingViewController.update(currentPage: nextPage)
         pagingViewController.currentViewController = nextPagingViewController
         
-        let duration = animated ? options.animationDuration : 0
-        UIView.animate(withDuration: duration, animations: {
-            () -> Void in
-            // 遷移のアニメーションに1つ前の画面が表示されてから指定の画面が表示されるという問題があるためコメントアウト
-//            pagingViewController.positionMenuController()
-            }) { [weak self] (_) -> Void in
-                pagingViewController.relayoutPagingViewControllers()
-                
-                // show paging views
-                self?.showPagingMenuControllers()
-                
-                self?.delegate?.didMove(toMenu: nextPagingViewController, fromMenu: previousPagingViewController)
-        }
+//        let duration = animated ? options.animationDuration : 0
+//        UIView.animate(withDuration: duration, animations: {
+//            () -> Void in
+//            // 遷移のアニメーションに1つ前の画面が表示されてから指定の画面が表示されるという問題があるためコメントアウト
+////            pagingViewController.positionMenuController()
+//            }) { [weak self] (_) -> Void in
+//                pagingViewController.relayoutPagingViewControllers()
+//                
+//                // show paging views
+//                self?.showPagingMenuControllers()
+//                
+//                self?.delegate?.didMove(toMenu: nextPagingViewController, fromMenu: previousPagingViewController)
+//        }
+        pagingViewController.relayoutPagingViewControllers()
+        
+        // show paging views
+        self.showPagingMenuControllers()
+        
+        self.delegate?.didMove(toMenu: nextPagingViewController, fromMenu: previousPagingViewController)
     }
     
     // MARK: - Constructor
